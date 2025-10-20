@@ -1,0 +1,6 @@
+{
+  "dencrytePayload": true,
+  "enableMiddleware": false,
+  "enableLogging": true
+}
+

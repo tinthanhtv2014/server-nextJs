@@ -14,15 +14,14 @@ import {
   ConflictError,
   ExceptionError,
 } from "../utils/response.util"; // 👈 nhớ đúng path nhé bro
-
 @Injectable()
 export class ApiResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const response = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
-      map((data) => {
-        // Nếu service trả về object có status thì xử lý động
+      map((data: any) => {
+        // 👈 THÊM :any Ở ĐÂY
         if (data && typeof data.status === "number") {
           console.log(`🔁 Interceptor đổi status HTTP thành: ${data.status}`);
           response.status(data.status);
@@ -30,7 +29,19 @@ export class ApiResponseInterceptor implements NestInterceptor {
           switch (data.status) {
             case 200:
             case 201:
-              return Success(data.resultApi ?? data, data.message ?? "Success");
+              if (data.isEncrypted) {
+                return SuccessEncrypted(
+                  data.resultApi ?? data,
+                  data.total ?? 1,
+                  data.message ?? "Success"
+                );
+              }
+
+              return Success(
+                data.resultApi ?? data,
+                data.message ?? "Success",
+                data.total
+              );
 
             case 400:
               return ProcessError(
@@ -54,12 +65,10 @@ export class ApiResponseInterceptor implements NestInterceptor {
               return ExceptionError(data.message ?? "Internal Server Error");
 
             default:
-              // Nếu không match status nào thì return data gốc
               return data;
           }
         }
 
-        // Nếu service không trả về status → mặc định 200 Success
         return Success(data);
       })
     );

@@ -1,47 +1,43 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Blog } from "../../models/entities/blog.entities";
-import {
-  Success,
-  ProcessError,
-  NotfoundError,
-  ConflictError,
-} from "../../shared/utils/response.util";
+import { ProcessError, ConflictError } from "../../shared/utils/response.util";
+import { BaseValidator } from "../base.validator";
+
 @Injectable()
-export class BlogValidator {
-  constructor(
-    @InjectModel(Blog.name) private readonly blogModel: Model<Blog>
-  ) {}
-
-  // ✅ Hàm kiểm tra title trùng
-  async validateCreate(dto: any) {
-    console.log("✅ Đang chạy validateCreate với data:", dto); // 👈 test nè bro
-    if (!dto.title || dto.title.trim() === "") {
-      return ProcessError("Thiếu title");
-    }
-
-    if (!dto.slug || dto.slug.trim() === "") {
-      return ProcessError("Thiếu Slug");
-    }
-
-    const exist = await this.blogModel.findOne({ title: dto.title });
-    if (exist) {
-      return ConflictError();
-    }
-    return null; // ✅ không lỗi
+export class BlogValidator extends BaseValidator {
+  constructor(@InjectModel(Blog.name) private readonly blogModel: Model<Blog>) {
+    super();
   }
 
-  // (Optional) Kiểm tra update
+  async validateCreate(dto: any) {
+    console.log("✅ Đang chạy validateCreate với data:", dto);
+
+    const checkTitle =
+      this.required(dto.title, "title") ||
+      this.isString(dto.title, "title") ||
+      this.minLength(dto.title, "title", 3);
+    if (checkTitle) return checkTitle;
+
+    const checkSlug =
+      this.required(dto.slug, "slug") ||
+      this.isString(dto.slug, "slug") ||
+      this.isSlug(dto.slug, "slug");
+    if (checkSlug) return checkSlug;
+
+    return null;
+  }
+
   async validateUpdate(id: string, dto: any) {
-    const exist = await this.blogModel.findOne({
-      title: dto.title,
-      slug: dto.slug,
-      blogId: { $ne: id },
-    });
-    if (exist) {
-      return ConflictError();
-    }
-    return null; // ✅ không lỗi
+    const checkTitle =
+      this.required(dto.title, "title") || this.isString(dto.title, "title");
+    if (checkTitle) return checkTitle;
+
+    const checkSlug =
+      this.required(dto.slug, "slug") || this.isString(dto.slug, "slug");
+    if (checkSlug) return checkSlug;
+
+    return null;
   }
 }

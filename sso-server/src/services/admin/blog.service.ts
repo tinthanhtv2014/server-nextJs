@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { BaseService } from "../helper/crud.service";
 import { BlogDocument } from "../../models/entities/blog.entities";
 import { BlogRepository } from "../../repository/blog/blog.respository";
-import { BlogValidator } from "../../validator/blog/blog.validator";
+
 import { BlogDto } from "../../models/dto/blog/blog.dto";
 import { Blog } from "../../models/entities/blog.entities";
 import {
@@ -13,17 +13,20 @@ import {
 } from "../../shared/utils/response.util";
 @Injectable()
 export class BlogService extends BaseService<BlogDocument> {
-  constructor(
-    private blogRepository: BlogRepository,
-    private readonly blogValidator: BlogValidator
-  ) {
+  constructor(private blogRepository: BlogRepository) {
     super(blogRepository);
   }
 
   async create(data: BlogDto): Promise<any | null> {
-    const validation = await this.blogValidator.validateCreate(data);
-    if (validation) return validation; // ⛔ có lỗi thì return luôn ProcessError()
+    const { data: existBlogs } = await super.getList({
+      filter: {
+        $or: [{ title: data.title }, { slug: data.slug }],
+      },
+    });
 
+    if (existBlogs.length > 0) {
+      return ProcessError("Title hoặc Slug đã tồn tại");
+    }
     return super.create(data);
   }
   async update(
@@ -32,8 +35,18 @@ export class BlogService extends BaseService<BlogDocument> {
     data: BlogDto
   ): Promise<any | null> {
     if (key === "blogId") {
-      const validation = await this.blogValidator.validateUpdate(value, data);
-      if (validation) return validation;
+      // ✅ Tìm xem có blog nào khác có cùng title & slug không
+      const exist = await super.getList({
+        filter: {
+          title: data.title,
+          slug: data.slug,
+          blogId: { $ne: value }, // loại trừ blog hiện tại
+        },
+      });
+
+      if (exist?.data?.length > 0) {
+        return ProcessError("Title hoặc Slug đã tồn tại");
+      }
     }
 
     const result = await super.update(key, value, data);

@@ -1,5 +1,5 @@
 export interface ApiResponse {
-  status: number;
+  statusCode: number;
   message: string;
   error: string | null;
   isBusinessError: boolean;

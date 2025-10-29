@@ -13,6 +13,7 @@ import {
   Unauthorized,
   ConflictError,
   ExceptionError,
+  SuccessEncrypted,
 } from "../utils/response.util"; // 👈 nhớ đúng path nhé bro
 @Injectable()
 export class ApiResponseInterceptor implements NestInterceptor {
@@ -22,11 +23,13 @@ export class ApiResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data: any) => {
         // 👈 THÊM :any Ở ĐÂY
-        if (data && typeof data.status === "number") {
-          console.log(`🔁 Interceptor đổi status HTTP thành: ${data.status}`);
-          response.status(data.status);
+        if (data && typeof data.statusCode === "number") {
+          console.log(
+            `🔁 Interceptor đổi status HTTP thành: ${data.statusCode}`
+          );
+          response.status(data.statusCode);
 
-          switch (data.status) {
+          switch (data.statusCode) {
             case 200:
             case 201:
               if (data.isEncrypted) {

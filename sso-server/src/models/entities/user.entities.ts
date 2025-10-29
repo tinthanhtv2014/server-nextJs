@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../base/base.entities';
-import { v4 as uuidv4 } from 'uuid';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { BaseEntity } from "../base/base.entities";
+import { v4 as uuidv4 } from "uuid";
 @Schema()
 export class User extends BaseEntity {
   @Prop({ default: uuidv4, unique: true })
@@ -12,13 +12,13 @@ export class User extends BaseEntity {
   @Prop({ required: true, unique: true })
   phoneNumber!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   firstName!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   lastName!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   fullName!: string;
 
   @Prop({ default: null })
@@ -27,10 +27,10 @@ export class User extends BaseEntity {
   @Prop({ default: 0 })
   points!: number;
 
-  @Prop({ default: 'active' })
+  @Prop({ default: "active" })
   status!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   passwordHash!: string;
 
   @Prop({ type: [String], default: [] })
@@ -42,10 +42,10 @@ export class User extends BaseEntity {
   @Prop({ default: 0 })
   userCreate!: number;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   privateKey!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   defaultAddress!: string;
 
   @Prop({ default: 0 })
@@ -57,7 +57,7 @@ export class User extends BaseEntity {
   @Prop({ default: 0 })
   defaultStore!: number;
 
-  @Prop({ default: 'PENDING' })
+  @Prop({ default: "PENDING" })
   rule!: string;
 
   @Prop()
@@ -72,17 +72,17 @@ export class User extends BaseEntity {
   @Prop({ default: 0.0 })
   wallet!: number;
 
-  @Prop({ default: 'chothongminh.com' })
+  @Prop({ default: "chothongminh.com" })
   originSystem!: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: "" })
   avatar!: string;
 
   @Prop({ default: null })
   birthday?: Date;
 
   @Prop({ default: 0 })
-  role!: number;
+  roleId!: string;
 }
-
+export type UserDocument = User & Document;
 export const UserSchema = SchemaFactory.createForClass(User);

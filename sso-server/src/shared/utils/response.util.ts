@@ -2,14 +2,13 @@
 
 import { ApiResponse } from "../../models/base/base.response.dto";
 
-
 export function Success(
   result: any,
   message: string = "Process success",
   total?: number
 ): ApiResponse {
   return {
-    status: 200,
+    statusCode: 200,
     message,
     error: null,
     isBusinessError: false,
@@ -26,7 +25,7 @@ export function SuccessEncrypted(
   message = "Process success"
 ): ApiResponse {
   return {
-    status: 200,
+    statusCode: 200,
     message,
     error: null,
     isBusinessError: false,
@@ -39,13 +38,13 @@ export function SuccessEncrypted(
 
 export function ProcessError(
   message = "Error",
-  status: number = 400,
+  statusCode: number = 400,
   error?: string,
   errorDetail: string = "",
   resultApi?: any
 ): ApiResponse {
   return {
-    status,
+    statusCode,
     message,
     error: error || "Internal Server Error",
     isBusinessError: true,
@@ -57,12 +56,12 @@ export function ProcessError(
 
 export function NotfoundError(
   message = "Notfound",
-  status: number = 404,
+  statusCode: number = 404,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    status,
+    statusCode,
     message,
     error: error || "Not found",
     isBusinessError: true,
@@ -74,12 +73,12 @@ export function NotfoundError(
 
 export function Unauthorized(
   message = "Unauthorized",
-  status: number = 401,
+  statusCode: number = 401,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    status,
+    statusCode,
     message,
     error: error || "Unauthorized",
     isBusinessError: true,
@@ -91,12 +90,12 @@ export function Unauthorized(
 
 export function ConflictError(
   message = "Conflict",
-  status: number = 409,
+  statusCode: number = 409,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    status,
+    statusCode,
     message,
     error: error || "Conflict",
     isBusinessError: true,
@@ -108,12 +107,23 @@ export function ConflictError(
 
 export function ExceptionError(message = "Internal Server Error"): ApiResponse {
   return {
-    status: 500,
+    statusCode: 500,
     message,
     error: "Exception Error",
     isBusinessError: false,
     errorDetail: "002",
     resultApi: null,
     isEncrypted: false,
+  };
+}
+export function PermissionDeniedError(message = "Access Denied"): ApiResponse {
+  return {
+    statusCode: 403,
+    message,
+    error: null,
+    isBusinessError: false,
+    errorDetail: null,
+    resultApi: null,
+    isEncrypted: true,
   };
 }

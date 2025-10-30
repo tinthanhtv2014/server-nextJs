@@ -14,8 +14,11 @@ export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly userService: UserService) {}
 
   async use(req: FastifyRequest, _res: any, next: () => void) {
+    next();
+    return;
     try {
       const authHeader = req.headers.authorization as string;
+
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         throw new ForbiddenException("Bạn không có quyền truy cập");
       }

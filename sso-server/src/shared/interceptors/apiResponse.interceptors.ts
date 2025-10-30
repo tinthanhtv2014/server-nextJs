@@ -23,13 +23,11 @@ export class ApiResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data: any) => {
         // 👈 THÊM :any Ở ĐÂY
-        if (data && typeof data.statusCode === "number") {
-          console.log(
-            `🔁 Interceptor đổi status HTTP thành: ${data.statusCode}`
-          );
-          response.status(data.statusCode);
+        if (data && typeof data.status === "number") {
+          console.log(`🔁 Interceptor đổi status HTTP thành: ${data.status}`);
+          response.status(data.status);
 
-          switch (data.statusCode) {
+          switch (data.status) {
             case 200:
             case 201:
               if (data.isEncrypted) {

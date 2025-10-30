@@ -8,7 +8,7 @@ export function Success(
   total?: number
 ): ApiResponse {
   return {
-    statusCode: 200,
+    status: 200,
     message,
     error: null,
     isBusinessError: false,
@@ -25,7 +25,7 @@ export function SuccessEncrypted(
   message = "Process success"
 ): ApiResponse {
   return {
-    statusCode: 200,
+    status: 200,
     message,
     error: null,
     isBusinessError: false,
@@ -38,13 +38,13 @@ export function SuccessEncrypted(
 
 export function ProcessError(
   message = "Error",
-  statusCode: number = 400,
+  status: number = 400,
   error?: string,
   errorDetail: string = "",
   resultApi?: any
 ): ApiResponse {
   return {
-    statusCode,
+    status,
     message,
     error: error || "Internal Server Error",
     isBusinessError: true,
@@ -56,12 +56,12 @@ export function ProcessError(
 
 export function NotfoundError(
   message = "Notfound",
-  statusCode: number = 404,
+  status: number = 404,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    statusCode,
+    status,
     message,
     error: error || "Not found",
     isBusinessError: true,
@@ -73,12 +73,12 @@ export function NotfoundError(
 
 export function Unauthorized(
   message = "Unauthorized",
-  statusCode: number = 401,
+  status: number = 401,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    statusCode,
+    status,
     message,
     error: error || "Unauthorized",
     isBusinessError: true,
@@ -90,12 +90,12 @@ export function Unauthorized(
 
 export function ConflictError(
   message = "Conflict",
-  statusCode: number = 409,
+  status: number = 409,
   error?: string,
   errorDetail: string = ""
 ): ApiResponse {
   return {
-    statusCode,
+    status,
     message,
     error: error || "Conflict",
     isBusinessError: true,
@@ -107,7 +107,7 @@ export function ConflictError(
 
 export function ExceptionError(message = "Internal Server Error"): ApiResponse {
   return {
-    statusCode: 500,
+    status: 500,
     message,
     error: "Exception Error",
     isBusinessError: false,
@@ -118,7 +118,7 @@ export function ExceptionError(message = "Internal Server Error"): ApiResponse {
 }
 export function PermissionDeniedError(message = "Access Denied"): ApiResponse {
   return {
-    statusCode: 403,
+    status: 403,
     message,
     error: null,
     isBusinessError: false,

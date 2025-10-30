@@ -9,15 +9,25 @@ import {
 } from "../../../models/entities/permission.entities";
 import { RoleModule } from "../role/role.module";
 import { PermissionService } from "../../../services/admin/permission.service";
+import { RolePermissionRepository } from "../../../repository/rolePermission/rolePermission.repository";
+import {
+  rolePermission,
+  rolePermissionSchema,
+} from "../../../models/entities/rolePermission.entities";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Permission.name, schema: PermissionSchema },
+      { name: rolePermission.name, schema: rolePermissionSchema },
     ]),
     forwardRef(() => RoleModule),
   ],
   controllers: [PermissionController],
-  providers: [PermissionService, PermissionRepository],
+  providers: [
+    PermissionService,
+    PermissionRepository,
+    RolePermissionRepository,
+  ],
 })
 export class PermissionModule {}

@@ -7,10 +7,6 @@ export class Permission extends BaseEntity {
   @Prop({ default: uuidv4, unique: true })
   permissionId: string = uuidv4();
 
-  // 🔗 Lưu roleId để biết permission này thuộc role nào
-  @Prop({ required: true })
-  roleId!: string;
-
   // Tên quyền (ví dụ: "CREATE_USER", "EDIT_PRODUCT")
   @Prop({ default: "" })
   permissionName!: string;

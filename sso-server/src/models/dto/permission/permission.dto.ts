@@ -22,10 +22,6 @@ export class PermissionDto {
     example: "role-1234",
     description: "ID của role mà quyền này thuộc về",
   })
-  @IsNotEmpty()
-  @IsString()
-  roleId!: string;
-
   @ApiProperty({
     example: false,
     description: "Trạng thái đã bị xóa hay chưa (soft delete)",

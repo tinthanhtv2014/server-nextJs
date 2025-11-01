@@ -44,9 +44,7 @@ export class UserService extends BaseService<UserDocument> {
     const newUser: Partial<UserDocument> = {
       userId: uuidv4(),
       emailAddress: dto.emailAddress || "",
-      firstName: dto.firstName || "",
-      lastName: dto.lastName || "",
-      fullName: `${dto.firstName || ""} ${dto.lastName || ""}`.trim(),
+      fullName: dto.fullName || "",
       phoneNumber: phoneObj?.custom_withPlus84_andRaw || "",
       address: dto.address || "",
       points: dto.points ?? 0,
@@ -96,7 +94,6 @@ export class UserService extends BaseService<UserDocument> {
       sort,
     });
 
-    // loại bỏ passwordHash & privateKey trước khi trả về
     const users = data.map((u: any) => {
       const { passwordHash, privateKey, ...rest } = u as any;
       return rest;
@@ -219,9 +216,7 @@ export class UserService extends BaseService<UserDocument> {
     const newUser: Partial<UserDocument> = {
       userId: uuidv4(),
       emailAddress: dto.emailAddress || "",
-      firstName: dto.firstName || "",
-      lastName: dto.lastName || "",
-      fullName: `${dto.firstName || ""} ${dto.lastName || ""}`.trim(),
+      fullName: dto.fullName || "",
       phoneNumber: phoneObj?.custom_withPlus84_andRaw || "",
       address: dto.address || "",
       status: "active",

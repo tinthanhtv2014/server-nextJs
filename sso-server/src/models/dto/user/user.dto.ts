@@ -13,12 +13,7 @@ export class CreateUserDto {
   @ApiProperty({ example: "Nguyen Van A", description: "Tên người dùng" })
   @IsNotEmpty()
   @IsString()
-  firstName: string = "";
-
-  @ApiProperty({ example: "Nguyen", description: "Họ người dùng" })
-  @IsOptional()
-  @IsString()
-  lastName?: string;
+  fullName: string = "";
 
   @ApiProperty({ example: "abc@gmail.com", description: "Email người dùng" })
   @IsOptional()
@@ -61,12 +56,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {}
 export class UserResponseDto {
   @ApiProperty()
   userId?: string;
-
-  @ApiProperty()
-  firstName?: string;
-
-  @ApiProperty()
-  lastName?: string;
 
   @ApiProperty()
   fullName?: string;
@@ -128,12 +117,7 @@ export class RegisterUserDto {
   @ApiProperty({ example: "Nguyen Van A", description: "Tên người dùng" })
   @IsNotEmpty()
   @IsString()
-  firstName: string = "";
-
-  @ApiProperty({ example: "Nguyen", description: "Họ người dùng" })
-  @IsOptional()
-  @IsString()
-  lastName?: string;
+  fullName: string = "";
 
   @ApiProperty({ example: "abc@gmail.com", description: "Email người dùng" })
   @IsOptional()

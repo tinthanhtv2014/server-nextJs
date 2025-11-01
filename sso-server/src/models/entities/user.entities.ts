@@ -13,16 +13,10 @@ export class User extends BaseEntity {
   phoneNumber!: string;
 
   @Prop({ default: "" })
-  firstName!: string;
-
-  @Prop({ default: "" })
-  lastName!: string;
-
-  @Prop({ default: "" })
   fullName!: string;
 
   @Prop({ default: null })
-  listAddress?: string;
+  address?: string;
 
   @Prop({ default: 0 })
   points!: number;
@@ -33,32 +27,11 @@ export class User extends BaseEntity {
   @Prop({ default: "" })
   passwordHash!: string;
 
-  @Prop({ type: [String], default: [] })
-  listTenant!: string[];
-
-  @Prop({ default: 0 })
-  userUpdate!: number;
-
-  @Prop({ default: 0 })
-  userCreate!: number;
-
   @Prop({ default: "" })
   privateKey!: string;
 
   @Prop({ default: "" })
   defaultAddress!: string;
-
-  @Prop({ default: 0 })
-  defaultTenant!: number;
-
-  @Prop({ default: 0 })
-  defaultOrganization!: number;
-
-  @Prop({ default: 0 })
-  defaultStore!: number;
-
-  @Prop({ default: "PENDING" })
-  rule!: string;
 
   @Prop()
   employed?: number;
@@ -68,12 +41,6 @@ export class User extends BaseEntity {
 
   @Prop({ default: 0.0 })
   lng!: number;
-
-  @Prop({ default: 0.0 })
-  wallet!: number;
-
-  @Prop({ default: "chothongminh.com" })
-  originSystem!: string;
 
   @Prop({ default: "" })
   avatar!: string;

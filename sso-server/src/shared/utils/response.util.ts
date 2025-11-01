@@ -1,7 +1,7 @@
 // src/shared/utils/response-helper.ts
 
 import { ApiResponse } from "../../models/base/base.response.dto";
-
+import { encryptAES } from "./encrypted.util";
 export function Success(
   result: any,
   message: string = "Process success",
@@ -31,7 +31,9 @@ export function SuccessEncrypted(
     isBusinessError: false,
     errorDetail: null,
     isEncrypted: true,
-    resultApi: result,
+    resultApi: {
+      data: encryptAES(result),
+    },
     total,
   };
 }

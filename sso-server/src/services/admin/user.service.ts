@@ -60,7 +60,11 @@ export class UserService extends BaseService<UserDocument> {
     };
 
     // repository.create sẽ gọi new this.model(data) bên trong
-    return await this.repository.create(newUser);
+    await this.repository.create(newUser);
+    return {
+      user: newUser,
+      isEncrypted: true,
+    };
   }
 
   /**
@@ -71,7 +75,7 @@ export class UserService extends BaseService<UserDocument> {
     pageCurrent: number = 1,
     pageSize: number = 10,
     sortList: { key: string; value: "asc" | "desc" }[] = []
-  ): Promise<{ users: any[]; totalUsers: number }> {
+  ): Promise<{ users: any[]; totalUsers: number; isEncrypted: boolean }> {
     const filter: any = {};
     if (search) {
       filter.$or = [
@@ -101,7 +105,7 @@ export class UserService extends BaseService<UserDocument> {
       return rest;
     });
 
-    return { users, totalUsers: total };
+    return { users, totalUsers: total, isEncrypted: true };
   }
 
   /**

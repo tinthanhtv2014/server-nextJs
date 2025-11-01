@@ -38,10 +38,4 @@ export class UserController extends BaseCrud<UserService>(
   async register(@Body() body: RegisterUserDto) {
     return this.userService.register(body);
   }
-
-  @Get()
-  @ApiOperation({ summary: "Get all users" })
-  async findAll() {
-    return this.userService.getUsers();
-  }
 }

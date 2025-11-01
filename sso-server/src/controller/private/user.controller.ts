@@ -5,13 +5,14 @@ import {
   CreateUserDto,
   UpdateUserDto,
   LoginUserDto,
+  RegisterUserDto,
 } from "../../models/dto/user/user.dto";
 import { BaseController } from "../base/base.controller";
 import { BaseCrud } from "../base/crud.controller";
 
-@ApiTags("UsersPrivate")
+@ApiTags("Users")
 @ApiBearerAuth("access-token") // dùng token đã khai báo ở swagger
-@Controller("usersPrivate")
+@Controller("users")
 export class UserController extends BaseCrud<UserService>(
   "userId",
   CreateUserDto,
@@ -34,7 +35,7 @@ export class UserController extends BaseCrud<UserService>(
 
   @Post("register")
   @ApiOperation({ summary: "Register new user" })
-  async register(@Body() body: CreateUserDto) {
+  async register(@Body() body: RegisterUserDto) {
     return this.userService.register(body);
   }
 

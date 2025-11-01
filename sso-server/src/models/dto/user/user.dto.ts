@@ -45,27 +45,13 @@ export class CreateUserDto {
   @IsString()
   password: string = "";
 
-  @ApiProperty({ example: [], description: "Danh sách tenant" })
-  @IsOptional()
-  listTenant?: string[];
-
-  @ApiProperty({ example: 0, description: "ID người tạo" })
-  @IsOptional()
-  @IsNumber()
-  userCreate?: number;
-
-  @ApiProperty({ example: 0, description: "ID người cập nhật" })
-  @IsOptional()
-  @IsNumber()
-  userUpdate?: number;
-
   @ApiProperty({ example: 0, description: "Role người dùng" })
   @IsOptional()
   roleId?: string;
 
   @ApiProperty({ example: 0, description: "Address mẫu" })
   @IsOptional()
-  defaultAddress?: string;
+  address?: string;
 }
 
 // DTO để update user
@@ -136,4 +122,35 @@ export class LoginUserDto {
   @IsNotEmpty()
   @IsString()
   password!: string;
+}
+
+export class RegisterUserDto {
+  @ApiProperty({ example: "Nguyen Van A", description: "Tên người dùng" })
+  @IsNotEmpty()
+  @IsString()
+  firstName: string = "";
+
+  @ApiProperty({ example: "Nguyen", description: "Họ người dùng" })
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+
+  @ApiProperty({ example: "abc@gmail.com", description: "Email người dùng" })
+  @IsOptional()
+  @IsEmail()
+  emailAddress?: string;
+
+  @ApiProperty({ example: "+84901234567", description: "Số điện thoại" })
+  @IsNotEmpty()
+  @IsString()
+  phoneNumber!: string;
+
+  @ApiProperty({ example: "password1234", description: "Mật khẩu" })
+  @IsOptional()
+  @IsString()
+  password: string = "";
+
+  @ApiProperty({ example: 0, description: "Address mẫu" })
+  @IsOptional()
+  address?: string;
 }

@@ -52,4 +52,22 @@ export class PermissionService extends BaseService<PermissionDocument> {
     );
     return results;
   }
+
+  public async deleteRolePermissions(dto: RolePermissionDto): Promise<any> {
+    if (!dto.roleId) {
+      throw new Error("roleId is required");
+    }
+
+    if (!dto.permissionIds || dto.permissionIds.length === 0) {
+      throw new Error("permissionIds is required and cannot be empty");
+    }
+
+    // Xóa hàng loạt quyền của 1 role
+    const deleted = await this.rolePermissionRepository.deleteMany({
+      roleId: dto.roleId,
+      permissionId: { $in: dto.permissionIds }, // xóa tất cả permissionId nằm trong mảng này
+    });
+
+    return deleted;
+  }
 }

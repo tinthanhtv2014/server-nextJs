@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Body,
-  Post,
-  Put,
-  Param,
-  Delete,
-  Query,
-  Get,
-} from "@nestjs/common";
+import { Controller, Body, Post, Delete, Query, Get } from "@nestjs/common";
 import {
   ApiTags,
   ApiOperation,
@@ -18,8 +9,9 @@ import { BaseCrud } from "../base/crud.controller";
 import { PermissionService } from "../../services/admin/permission.service";
 import { PermissionDto } from "../../models/dto/permission/permission.dto";
 import { RolePermissionDto } from "../../models/dto/rolePermission/rolePermission.dto";
+
 @ApiTags("Permissions")
-@ApiBearerAuth("access-token") // dùng token đã khai báo ở swagger
+@ApiBearerAuth("access-token")
 @Controller("permissions")
 export class PermissionController extends BaseCrud<PermissionService>(
   "permissionId",
@@ -29,14 +21,15 @@ export class PermissionController extends BaseCrud<PermissionService>(
   constructor(private readonly permissionService: PermissionService) {
     super(permissionService);
   }
+
   @Post("rolePermission")
-  @ApiOperation({ summary: "Linked Role and Permission" })
+  @ApiOperation({ summary: "Link Role and Permissions" })
   async createRolePermission(@Body() body: RolePermissionDto) {
     return this.permissionService.createRolePermission(body);
   }
 
   @Delete("rolePermission")
-  @ApiOperation({ summary: "Unlink Role and Permission" })
+  @ApiOperation({ summary: "Unlink Role and a specific Permission" })
   async deleteRolePermission(
     @Body() body: { roleId: string; permissionId?: string }
   ) {
@@ -45,6 +38,13 @@ export class PermissionController extends BaseCrud<PermissionService>(
       body.permissionId
     );
   }
+
+  @Delete("rolePermissions")
+  @ApiOperation({ summary: "Unlink multiple Permissions from a Role" })
+  async deleteRolePermissions(@Body() body: RolePermissionDto) {
+    return this.permissionService.deleteRolePermissions(body);
+  }
+
   @Get("rolePermission")
   @ApiOperation({ summary: "Get permissions linked to a role" })
   @ApiQuery({ name: "roleId", required: true })

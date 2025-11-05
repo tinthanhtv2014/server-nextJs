@@ -1,0 +1,74 @@
+sso-server/
+├── node_modules/
+├── src/
+│   ├── config/
+│   │   └── context/
+│   │       └── mongo.context.ts
+│   ├── controller/
+│   │   ├── middleware/
+│   │   │   └── auth.middleware.ts
+│   │   └── (các controller khác)
+│   ├── models/
+│   │   ├── base/
+│   │   │   ├── base.entities.ts
+│   │   │   └── base.response.dto.ts
+│   │   ├── dto/
+│   │   │   ├── blog/blog.dto.ts
+│   │   │   ├── permission/permission.dto.ts
+│   │   │   ├── role/role.dto.ts
+│   │   │   ├── rolePermission/rolePermission.dto.ts
+│   │   │   └── user/user.dto.ts
+│   │   └── entities/
+│   │       ├── blog.entities.ts
+│   │       ├── permission.entities.ts
+│   │       ├── role.entities.ts
+│   │       ├── rolePermission.entities.ts
+│   │       └── user.entities.ts
+│   ├── enum/
+│   │   ├── module/
+│   │   │   ├── admin/
+│   │   │   └── client/
+│   ├── module/
+│   │   ├── repository/
+│   │   │   ├── blog/blog.repository.ts
+│   │   │   ├── permission/permission.repository.ts
+│   │   │   ├── role/role.repository.ts
+│   │   │   ├── rolePermission/rolePermission.repository.ts
+│   │   │   └── user/base.repository.ts
+│   │   └── services/
+│   │       ├── admin/
+│   │       │   ├── blog.service.ts
+│   │       │   ├── permission.service.ts
+│   │       │   ├── role.service.ts
+│   │       │   └── user.service.ts
+│   │       ├── helper/
+│   │       │   ├── crud.service.ts
+│   │       │   └── log.service.ts
+│   ├── shared/
+│   │   ├── helper/fn.helper.ts
+│   │   ├── interceptors/
+│   │   ├── utils/
+│   │   │   ├── encrypted.util.ts
+│   │   │   ├── jwt.util.ts
+│   │   │   ├── mgo.util.ts
+│   │   │   └── response.util.ts
+│   ├── start/swagger.setup.ts
+│   ├── validator/
+│   │   └── blog/base.validator.ts
+│   ├── app.controller.ts
+│   ├── app.module.ts
+│   ├── app.service.ts
+│   └── main.ts
+├── .env
+├── package.json
+├── tsconfig.json
+└── README.md
+
+
+Controller: định nghĩa các route HTTP (API endpoints).
+Service: xử lý logic nghiệp vụ.
+Repository: giao tiếp với database (MongoDB).
+DTO: định nghĩa dữ liệu đầu vào/đầu ra.
+Entities: mô hình dữ liệu (Mongoose Schema hoặc TypeORM Entity).
+Middleware: xác thực / logging.
+Utils: chứa hàm tiện ích (JWT, encryption, response format, v.v.).

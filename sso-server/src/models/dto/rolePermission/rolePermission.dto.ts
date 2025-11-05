@@ -16,7 +16,7 @@ export class RolePermissionDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
-  permissionId!: string[];
+  permissionIds!: string[];
 
   @ApiProperty({
     example: "Cho phép xem danh sách sản phẩm",

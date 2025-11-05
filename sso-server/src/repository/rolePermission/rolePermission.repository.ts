@@ -22,4 +22,33 @@ export class RolePermissionRepository extends BaseRepository<rolePermissionDocum
     if (!data || data.length === 0) return [];
     return await this.rolePermissionModel.insertMany(data, { ordered: false });
   }
+  async deleteOne(filter: any): Promise<any> {
+    return this.rolePermissionModel.deleteOne(filter).exec();
+  }
+
+  async deleteMany(filter: any): Promise<any> {
+    return this.rolePermissionModel.deleteMany(filter).exec();
+  }
+  async find(filter: any = {}): Promise<any> {
+    const data = this.rolePermissionModel.find(filter).exec();
+
+    return data;
+  }
+
+  async findWithPermissions(roleId: string) {
+    return this.rolePermissionModel
+      .aggregate([
+        { $match: { roleId } },
+        {
+          $lookup: {
+            from: "permissions",
+            localField: "permissionId",
+            foreignField: "permissionId",
+            as: "permission",
+          },
+        },
+        { $unwind: "$permission" },
+      ])
+      .exec();
+  }
 }

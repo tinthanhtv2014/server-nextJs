@@ -17,7 +17,7 @@ export class PermissionService extends BaseService<PermissionDocument> {
 
   public async createRolePermission(dto: RolePermissionDto): Promise<any> {
     // Lặp qua mảng permissionId để tạo nhiều bản ghi
-    const rolePermissions = dto.permissionId.map((permissionId) => ({
+    const rolePermissions = dto.permissionIds.map((permissionId) => ({
       rolePermissionId: uuidv4(),
       roleId: dto.roleId,
       permissionId,
@@ -31,5 +31,25 @@ export class PermissionService extends BaseService<PermissionDocument> {
     );
 
     return created;
+  }
+  public async deleteRolePermission(roleId: string, permissionId?: string) {
+    if (!roleId) {
+      throw new Error("roleId is required");
+    }
+
+    // Nếu có permissionId → xóa 1 cặp cụ thể
+    if (permissionId) {
+      return this.rolePermissionRepository.deleteOne({ roleId, permissionId });
+    }
+
+    // Nếu không có permissionId → xóa tất cả permission của role đó
+    return this.rolePermissionRepository.deleteMany({ roleId });
+  }
+  public async getRolePermissions(roleId: string) {
+    if (!roleId) throw new Error("roleId is required");
+    const results = await this.rolePermissionRepository.findWithPermissions(
+      roleId
+    );
+    return results;
   }
 }

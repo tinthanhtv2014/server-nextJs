@@ -28,17 +28,6 @@ export class PermissionController extends BaseCrud<PermissionService>(
     return this.permissionService.createRolePermission(body);
   }
 
-  @Delete("rolePermission")
-  @ApiOperation({ summary: "Unlink Role and a specific Permission" })
-  async deleteRolePermission(
-    @Body() body: { roleId: string; permissionId?: string }
-  ) {
-    return this.permissionService.deleteRolePermission(
-      body.roleId,
-      body.permissionId
-    );
-  }
-
   @Delete("rolePermissions")
   @ApiOperation({ summary: "Unlink multiple Permissions from a Role" })
   async deleteRolePermissions(@Body() body: RolePermissionDto) {

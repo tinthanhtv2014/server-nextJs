@@ -55,10 +55,7 @@ export function BaseCrud<TService>(
     @Get(`find-one/:${primaryKey}`)
     @ApiOperation({ summary: `Get one record by ${primaryKey}` })
     async findOne(@Param(primaryKey) value: string) {
-      const result = await (this.service as any).findOne({
-        [primaryKey]: value,
-      });
-
+      const result = await (this.service as any).findOne(primaryKey, value);
       return result;
     }
 

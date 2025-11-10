@@ -54,9 +54,18 @@ export function BaseCrud<TService>(
 
     @Get(`find-one/:${primaryKey}`)
     @ApiOperation({ summary: `Get one record by ${primaryKey}` })
-    async findOne(@Param(primaryKey) value: string) {
+    async findOne(@Param(primaryKey) value: string, @Query() query?: any) {
       const result = await (this.service as any).findOne(primaryKey, value);
-      return result;
+      const isEncrypted =
+        query?.encrypted === "true" || query?.isEncrypted === "true"
+          ? true
+          : false;
+      return {
+        status: 200,
+        message: "Get one successfully",
+        isEncrypted: isEncrypted,
+        resultApi: result,
+      };
     }
 
     @Put(`update/:${primaryKey}`)

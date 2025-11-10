@@ -39,17 +39,33 @@ export function BaseCrud<TService>(
     async getList(@Query() query?: any) {
       const result = await (this.service as any).getList(query);
       const total = Array.isArray(result) ? result.length : result?.total;
-      return result;
+      const isEncrypted =
+        query?.encrypted === "true" || query?.isEncrypted === "true"
+          ? true
+          : false;
+      return {
+        status: 200,
+        message: "Get list successfully",
+        isEncrypted: isEncrypted,
+        resultApi: result,
+        total,
+      };
     }
 
     @Get(`find-one/:${primaryKey}`)
     @ApiOperation({ summary: `Get one record by ${primaryKey}` })
-    async findOne(@Param(primaryKey) value: string) {
-      const result = await (this.service as any).findOne({
-        [primaryKey]: value,
-      });
-
-      return result;
+    async findOne(@Param(primaryKey) value: string, @Query() query?: any) {
+      const result = await (this.service as any).findOne(primaryKey, value);
+      const isEncrypted =
+        query?.encrypted === "true" || query?.isEncrypted === "true"
+          ? true
+          : false;
+      return {
+        status: 200,
+        message: "Get one successfully",
+        isEncrypted: isEncrypted,
+        resultApi: result,
+      };
     }
 
     @Put(`update/:${primaryKey}`)

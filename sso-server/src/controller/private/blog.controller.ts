@@ -24,13 +24,16 @@ export class BlogController extends BaseCrud<BlogService>(
   @ApiOperation({ summary: "Tạo blog mới (có validate)" })
   @ApiBody({ type: BlogDto })
   async create(@Body() body: any) {
-    console.log("🧩 BlogController.create override:", body);
-
+    try{
+      return this.BadRequest(this.ConvertMessageToLange("GB404","en"), 400);
     const validationError = await this.blogValidator.validateCreate(body);
-    if (validationError) return validationError;
-
+    if (validationError) return this.BadRequest("Dữ liệu đã tồn tại", 409);
     const result = await this.blogService.create(body);
     return result;
+    }
+    catch(err){
+      this.ExceptionError("/api/v1/admin/blogs/create",err);
+    }
   }
 
   @Put("update/:blogId")

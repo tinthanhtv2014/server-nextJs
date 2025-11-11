@@ -10,6 +10,7 @@ import { setupSwagger } from "./start/swagger.setup";
 import { Logger } from "@nestjs/common";
 import { ApiResponseInterceptor } from "./shared/interceptors/apiResponse.interceptors";
 import fastifyCors from "@fastify/cors";
+import { LogService } from "./services/helper/log.service";
 
 const severInitLog = new Logger("App");
 

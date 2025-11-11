@@ -3,7 +3,7 @@ import { ErrorLog } from "../../models/enum/error-log.enum";
 import config from "../../config/base/base-config.json"
 
 Sentry.init({
-  dsn: "https://c052f03c5a0db4e7635b8ed752015312@o4509902576484352.ingest.de.sentry.io/4509902753824848", // thay DSN thật
+  dsn: "https://21de3105b788175c49a19a284da1669a@o4510346741350400.ingest.de.sentry.io/4510346758717520", // thay DSN thật
   tracesSampleRate: 1.0,
   environment: process.env.NODE_ENV || "development",
 });
@@ -44,8 +44,8 @@ export class LogService {
     Sentry.captureMessage(errorLog);
   }
 
-  exceptionErrorLog(controller: string, error: string, context?: any) {
-    const errorLog = `[${controller}]-[${ErrorLog.EXCEPTION}]: ${error}`;
+  exceptionErrorLog(apiPath: string, error: string, context?: any) {
+    const errorLog = `[${apiPath}]-[${ErrorLog.EXCEPTION}]: ${error}`;
     console.error(`${errorLog}, ${context}`);
     Sentry.captureException(error);
   }

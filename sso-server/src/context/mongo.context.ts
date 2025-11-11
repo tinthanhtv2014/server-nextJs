@@ -10,8 +10,10 @@ const mongooseLogger = new Logger('Mongoose');
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const uri = configService.get<string>('MONGO_URI');
+        const dbName = configService.get<string>('MONGO_DB_NAME') || 'wallet_service';
         return {
           uri,
+          dbName,
           connectionFactory: async (connection) => {
             // connection.set('debug', true);
 

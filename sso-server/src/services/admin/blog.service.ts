@@ -18,16 +18,23 @@ export class BlogService extends BaseService<BlogDocument> {
   }
 
   async create(data: BlogDto): Promise<any | null> {
-    const { data: existBlogs } = await super.getList({
-      filter: {
-        $or: [{ title: data.title }, { slug: data.slug }],
-      },
-    });
+    try {
+      throw new Error("Test exception handling in BlogService.create");
+      const { data: existBlogs } = await super.getList({
+        filter: {
+          $or: [{ title: data.title }, { slug: data.slug }],
+        },
+      });
 
-    if (existBlogs.length > 0) {
-      return ProcessError("Title hoặc Slug đã tồn tại");
+      if (existBlogs.length > 0) {
+        return ProcessError("Title hoặc Slug đã tồn tại");
+      }
+      return super.create(data);
     }
-    return super.create(data);
+    catch (err) {
+      throw err;
+    }
+
   }
   async update(
     key: keyof Blog,

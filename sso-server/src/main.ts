@@ -33,7 +33,7 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT || 5001, "0.0.0.0");
   severInitLog.log(
-    `${process.env.SEVER_NAME} Server listening on ${process.env.DOMAIN}`
+    `${process.env.SEVER_NAME} Server listening on ${process.env.DOMAIN}/docs/admin`
   );
 }
 

@@ -8,7 +8,7 @@ export class Blog extends BaseEntity {
   blogId: string = uuidv4();
 
   @Prop({ default: "" })
-  title!: string;
+  name!: string;
 
   @Prop({ default: "" })
   slug!: string;
@@ -17,25 +17,31 @@ export class Blog extends BaseEntity {
   content!: string;
 
   @Prop({ default: "" })
-  thumbnail!: string;
+  image_url!: string;
 
   @Prop({ default: "" })
-  authorId!: string;
+  meta_title!: string;
+
+  @Prop({ default: "" })
+  meta_slug!: string;
 
   @Prop({ type: [String], default: [] })
-  tags!: string[];
+  meta_description!: string[];
 
   @Prop({ default: false })
-  isPublished!: boolean;
+  meta_keywords!: boolean;
 
   @Prop({ default: 0 })
-  views!: number;
+  view_count!: number;
 
   @Prop({ default: "" })
   category!: string;
 
   @Prop({ default: false })
   isDeleted!: boolean;
+
+  @Prop({ default: false })
+  status!: boolean;
 }
 
 export type BlogDocument = Blog & Document;

@@ -11,6 +11,7 @@ import { LoggerMiddleware } from "../../middleware/auth.middleware";
 import { RoleModule } from "./role/role.module";
 import { BlogModule } from "./blog/blog.module";
 import { PermissionModule } from "./permission/permission.module";
+import { BlogCategoryModule } from "./blog-category.module.ts/blog-category.module";
 
 export const AdminRegistryModule = [
   UserModule,
@@ -18,6 +19,7 @@ export const AdminRegistryModule = [
   RoleModule,
   BlogModule,
   PermissionModule,
+  BlogCategoryModule,
 ];
 
 @Module({

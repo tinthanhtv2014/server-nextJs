@@ -12,7 +12,6 @@ export class BlogValidator extends BaseValidator {
   }
 
   async validateCreate(dto: any) {
-    console.log("✅ Đang chạy validateCreate với data:", dto);
 
     const checkTitle =
       this.required(dto.title, "title") ||

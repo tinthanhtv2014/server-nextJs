@@ -25,7 +25,6 @@ export class BlogController extends BaseCrud<BlogService>(
   @ApiBody({ type: BlogDto })
   async create(@Body() body: any) {
     try{
-      return this.BadRequest(this.ConvertMessageToLange("GB404","en"), 400);
     const validationError = await this.blogValidator.validateCreate(body);
     if (validationError) return this.BadRequest("Dữ liệu đã tồn tại", 409);
     const result = await this.blogService.create(body);
@@ -40,7 +39,6 @@ export class BlogController extends BaseCrud<BlogService>(
   @ApiOperation({ summary: "Cập nhật blog (có validate)" })
   @ApiBody({ type: BlogDto })
   async update(@Param("blogId") blogId: string, @Body() body: any) {
-    console.log("🧩 BlogController.update override:", { blogId, body });
 
     const validationError = await this.blogValidator.validateUpdate(
       blogId,

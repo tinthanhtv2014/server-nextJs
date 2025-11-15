@@ -5,9 +5,9 @@ import {
   UnauthorizedException,
   InternalServerErrorException,
 } from "@nestjs/common";
-import { FastifyRequest } from "fastify";
 import * as jwt from "jsonwebtoken";
 import { UserService } from "../services/admin/user.service";
+import { FastifyRequest } from "@sentry/node/build/types/integrations/tracing/fastify/types";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -17,8 +17,8 @@ export class LoggerMiddleware implements NestMiddleware {
     next();
     return;
     try {
-      const authHeader = req.headers.authorization as string;
-
+      // const authHeader = req.headers.authorization as string;
+      const authHeader =  " "
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         throw new ForbiddenException("Bạn không có quyền truy cập");
       }
@@ -41,7 +41,6 @@ export class LoggerMiddleware implements NestMiddleware {
       }
 
       const user = await this.userService.getUserById(decoded.userId);
-      console.log("user", user);
       if (!user || user.privateKey !== decoded.privateKey) {
         throw new ForbiddenException("Token không hợp lệ");
       }

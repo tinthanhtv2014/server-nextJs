@@ -25,7 +25,6 @@ export class BlogCategoryController extends BaseCrud<BlogCategoryService>(
   @ApiOperation({ summary: "Tạo blog category mới (có validate)" })
   @ApiBody({ type: BlogCategoryDto })
   async create(@Body() body: any) {
-    console.log("🧩 BlogController.create override:", body);
 
     const validationError = await this.blogCategoryValidator.validateCreate(
       body
@@ -43,7 +42,6 @@ export class BlogCategoryController extends BaseCrud<BlogCategoryService>(
     @Param("blogCategoryId") blogCategoryId: string,
     @Body() body: any
   ) {
-    console.log("🧩 BlogController.update override:", { blogCategoryId, body });
 
     const validationError = await this.blogCategoryValidator.validateUpdate(
       blogCategoryId,

@@ -17,9 +17,8 @@ export class BlogService extends BaseService<BlogDocument> {
     super(blogRepository);
   }
 
-  async create(data: BlogDto): Promise<any | null> {
+  async create(data: any): Promise<any | null> {
     try {
-      throw new Error("Test exception handling in BlogService.create");
       const { data: existBlogs } = await super.getList({
         filter: {
           $or: [{ title: data.title }, { slug: data.slug }],
@@ -39,7 +38,7 @@ export class BlogService extends BaseService<BlogDocument> {
   async update(
     key: keyof Blog,
     value: any,
-    data: BlogDto
+    data: any
   ): Promise<any | null> {
     if (key === "blogId") {
       // ✅ Tìm xem có blog nào khác có cùng title & slug không

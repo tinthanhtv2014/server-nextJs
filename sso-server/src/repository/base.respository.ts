@@ -77,7 +77,6 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
     filter: FilterQuery<T>,
     data: Partial<T>
   ): Promise<T | null> {
-    console.log("data", filter);
     return this.model.findOneAndUpdate(filter, data, { new: true }).exec();
   }
 

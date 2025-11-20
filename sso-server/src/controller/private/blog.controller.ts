@@ -24,14 +24,14 @@ export class BlogController extends BaseCrud<BlogService>(
   @ApiOperation({ summary: "Tạo blog mới (có validate)" })
   @ApiBody({ type: BlogDto })
   async create(@Body() body: any) {
-    try{
-    const validationError = await this.blogValidator.validateCreate(body);
-    if (validationError) return this.BadRequest("Dữ liệu đã tồn tại", 409);
-    const result = await this.blogService.create(body);
-    return result;
-    }
-    catch(err){
-      this.ExceptionError("/api/v1/admin/blogs/create",err);
+    try {
+      const validationError = await this.blogValidator.validateCreate(body);
+      if (validationError)
+        return this.BadRequest("Thiếu dữ liệu name hoặc slug", 400);
+      const result = await this.blogService.create(body);
+      return result;
+    } catch (err) {
+      this.ExceptionError("/api/v1/admin/blogs/create", err);
     }
   }
 
@@ -39,14 +39,18 @@ export class BlogController extends BaseCrud<BlogService>(
   @ApiOperation({ summary: "Cập nhật blog (có validate)" })
   @ApiBody({ type: BlogDto })
   async update(@Param("blogId") blogId: string, @Body() body: any) {
+    try {
+      const validationError = await this.blogValidator.validateUpdate(
+        blogId,
+        body
+      );
+      if (validationError)
+        return this.BadRequest("Thiếu dữ liệu name hoặc slug", 400);
 
-    const validationError = await this.blogValidator.validateUpdate(
-      blogId,
-      body
-    );
-    if (validationError) return validationError;
-
-    const result = await this.blogService.update("blogId", blogId, body);
-    return result;
+      const result = await this.blogService.update("blogId", blogId, body);
+      return result;
+    } catch (error) {
+      this.ExceptionError("/api/v1/admin/blogs/update", error);
+    }
   }
 }

@@ -10,6 +10,7 @@ import {
   Success,
   ProcessError,
   NotfoundError,
+  ExceptionError,
 } from "../../shared/utils/response.util";
 @Injectable()
 export class BlogService extends BaseService<BlogDocument> {
@@ -29,34 +30,32 @@ export class BlogService extends BaseService<BlogDocument> {
         return ProcessError("Title hoặc Slug đã tồn tại");
       }
       return super.create(data);
-    }
-    catch (err) {
+    } catch (err) {
       throw err;
     }
-
   }
-  async update(
-    key: keyof Blog,
-    value: any,
-    data: any
-  ): Promise<any | null> {
-    if (key === "blogId") {
-      // ✅ Tìm xem có blog nào khác có cùng title & slug không
-      const exist = await super.getList({
-        filter: {
-          title: data.title,
-          slug: data.slug,
-          blogId: { $ne: value }, // loại trừ blog hiện tại
-        },
-      });
+  async update(key: keyof Blog, value: any, data: any): Promise<any | null> {
+    try {
+      if (key === "blogId") {
+        // ✅ Tìm xem có blog nào khác có cùng title & slug không
+        const exist = await super.getList({
+          filter: {
+            title: data.title,
+            slug: data.slug,
+            blogId: { $ne: value }, // loại trừ blog hiện tại
+          },
+        });
 
-      if (exist?.data?.length > 0) {
-        return ProcessError("Title hoặc Slug đã tồn tại");
+        if (exist?.data?.length > 0) {
+          return ProcessError("Title hoặc Slug đã tồn tại");
+        }
       }
+
+      const result = await super.update(key, value, data);
+
+      return result;
+    } catch (error) {
+      return ExceptionError();
     }
-
-    const result = await super.update(key, value, data);
-
-    return result;
   }
 }

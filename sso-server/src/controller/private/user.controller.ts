@@ -24,18 +24,30 @@ export class UserController extends BaseCrud<UserService>(
   @Post()
   @ApiOperation({ summary: "Create a new user" })
   async create(@Body() body: CreateUserDto) {
-    return this.userService.createUser(body);
+    try {
+      return this.userService.createUser(body);
+    } catch (error) {
+      return this.ExceptionError(`/api/v1/admin/users/create`, error);
+    }
   }
 
   @Post("login")
   @ApiOperation({ summary: "Login user" })
   async login(@Body() body: LoginUserDto) {
-    return this.userService.login(body.emailOrPhone, body.password);
+    try {
+      return this.userService.login(body.emailOrPhone, body.password);
+    } catch (error) {
+      return this.ExceptionError(`/api/v1/admin/users/login`, error);
+    }
   }
 
   @Post("register")
   @ApiOperation({ summary: "Register new user" })
   async register(@Body() body: RegisterUserDto) {
-    return this.userService.register(body);
+    try {
+      return this.userService.register(body);
+    } catch (error) {
+      return this.ExceptionError(`/api/v1/admin/users/register`, error);
+    }
   }
 }

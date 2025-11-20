@@ -25,13 +25,28 @@ export class PermissionController extends BaseCrud<PermissionService>(
   @Post("rolePermission")
   @ApiOperation({ summary: "Link Role and Permissions" })
   async createRolePermission(@Body() body: RolePermissionDto) {
-    return this.permissionService.createRolePermission(body);
+    try {
+      return this.permissionService.createRolePermission(body);
+    } catch (error) {
+      this.ExceptionError("/api/v1/admin/rolePermission/create", error);
+    }
   }
 
   @Delete("rolePermissions")
   @ApiOperation({ summary: "Unlink multiple Permissions from a Role" })
   async deleteRolePermissions(@Body() body: RolePermissionDto) {
-    return this.permissionService.deleteRolePermissions(body);
+    try {
+      if (!body.roleId) {
+        return this.BadRequest("Thiếu dữ liệu roleId", 400);
+      }
+
+      if (!body.permissionIds || body.permissionIds.length === 0) {
+        return this.BadRequest("Thiếu dữ liệu permissionIds", 400);
+      }
+      return this.permissionService.deleteRolePermissions(body);
+    } catch (error) {
+      this.ExceptionError("/api/v1/admin/rolePermission/delete", error);
+    }
   }
 
   @Get("rolePermission")

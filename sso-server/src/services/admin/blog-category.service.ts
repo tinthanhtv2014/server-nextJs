@@ -8,6 +8,7 @@ import {
   Success,
   ProcessError,
   NotfoundError,
+  ExceptionError,
 } from "../../shared/utils/response.util";
 import {
   BlogCategoryDocument,
@@ -22,38 +23,46 @@ export class BlogCategoryService extends BaseService<BlogCategoryDocument> {
   }
 
   async create(data: BlogCategoryDto): Promise<any | null> {
-    const { data: existBlogs } = await super.getList({
-      filter: {
-        $or: [{ title: data.name }, { slug: data.slug }],
-      },
-    });
+    try {
+      const { data: existBlogs } = await super.getList({
+        filter: {
+          $or: [{ title: data.name }, { slug: data.slug }],
+        },
+      });
 
-    if (existBlogs.length > 0) {
-      return ProcessError("Title hoặc Slug đã tồn tại");
+      if (existBlogs.length > 0) {
+        return ProcessError("Title hoặc Slug đã tồn tại");
+      }
+      return super.create(data);
+    } catch (error) {
+      return ExceptionError();
     }
-    return super.create(data);
   }
   async update(
     key: keyof BlogCategory,
     value: any,
     data: BlogCategoryDto
   ): Promise<any | null> {
-    if (key === "blogCategoryId") {
-      const exist = await super.getList({
-        filter: {
-          name: data.name,
-          slug: data.slug,
-          blogCategoryId: { $ne: value },
-        },
-      });
+    try {
+      if (key === "blogCategoryId") {
+        const exist = await super.getList({
+          filter: {
+            name: data.name,
+            slug: data.slug,
+            blogCategoryId: { $ne: value },
+          },
+        });
 
-      if (exist?.data?.length > 0) {
-        return ProcessError("Title hoặc Slug đã tồn tại");
+        if (exist?.data?.length > 0) {
+          return ProcessError("Title hoặc Slug đã tồn tại");
+        }
       }
+
+      const result = await super.update(key, value, data);
+
+      return result;
+    } catch (error) {
+      return ExceptionError();
     }
-
-    const result = await super.update(key, value, data);
-
-    return result;
   }
 }

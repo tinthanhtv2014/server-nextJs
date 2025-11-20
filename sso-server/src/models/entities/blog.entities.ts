@@ -28,8 +28,8 @@ export class Blog extends BaseEntity {
   @Prop({ type: [String], default: [] })
   meta_description!: string[];
 
-  @Prop({ default: false })
-  meta_keywords!: boolean;
+  @Prop({ default: "" })
+  meta_keywords!: string;
 
   @Prop({ default: 0 })
   view_count!: number;
@@ -40,8 +40,8 @@ export class Blog extends BaseEntity {
   @Prop({ default: false })
   isDeleted!: boolean;
 
-  @Prop({ default: false })
-  status!: boolean;
+  @Prop({ default: "" })
+  status!: string;
 }
 
 export type BlogDocument = Blog & Document;

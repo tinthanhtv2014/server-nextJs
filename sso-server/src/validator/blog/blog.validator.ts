@@ -12,11 +12,10 @@ export class BlogValidator extends BaseValidator {
   }
 
   async validateCreate(dto: any) {
-
     const checkTitle =
-      this.required(dto.title, "title") ||
-      this.isString(dto.title, "title") ||
-      this.minLength(dto.title, "title", 3);
+      this.required(dto.name, "name") ||
+      this.isString(dto.name, "name") ||
+      this.minLength(dto.name, "name", 3);
     if (checkTitle) return checkTitle;
 
     const checkSlug =
@@ -30,7 +29,7 @@ export class BlogValidator extends BaseValidator {
 
   async validateUpdate(id: string, dto: any) {
     const checkTitle =
-      this.required(dto.title, "title") || this.isString(dto.title, "title");
+      this.required(dto.name, "name") || this.isString(dto.name, "name");
     if (checkTitle) return checkTitle;
 
     const checkSlug =

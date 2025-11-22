@@ -1,0 +1,11 @@
+- name: Deploy to EC2
+  run: |
+    ssh -i ~/.ssh/ci-cd-key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+      cd ${{ secrets.PROJECT_DIR }}           # Project root chứa .git
+      git reset --hard
+      git pull origin main
+      cd sso-server                            # vào thư mục server
+      npm install
+      npm run build
+      pm2 restart sso-server || pm2 start dist/main.js --name sso-server
+    EOF

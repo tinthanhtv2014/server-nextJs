@@ -1,12 +1,13 @@
 // src/repositories/base.repository.ts
 import { Model, Document, FilterQuery, UpdateQuery } from "mongoose";
 import { Injectable } from "@nestjs/common";
+import { buildMongoQuery } from "../shared/utils/mgo.util";
 
 export interface IBaseRepository<T extends Document> {
   getMany(
     filter?: FilterQuery<T>,
     projection?: any,
-    options?: { sort?: any; skip?: number; limit?: number }
+    options?: { sort?: any; skip?: number; limit?: number },
   ): Promise<{ data: any; total: number }>;
   getOne(filter: FilterQuery<T>, projection?: any): Promise<T | null>;
   getById(id: string): Promise<T | null>;
@@ -25,7 +26,7 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
   public async getMany(
     filter: FilterQuery<T> = {},
     projection: any = null,
-    options: { sort?: any; skip?: number; limit?: number } = {}
+    options: { sort?: any; skip?: number; limit?: number } = {},
   ): Promise<{ data: any; total: number }> {
     // <-- LeanDocument<T>[] thay vì T[]
     const { sort, skip, limit } = options;
@@ -45,7 +46,7 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
   }
   public async getOne(
     filter: FilterQuery<T>,
-    projection: any = null
+    projection: any = null,
   ): Promise<T | null> {
     return this.model
       .findOne({ ...filter, isDeleted: false }, projection)
@@ -59,7 +60,7 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
 
   public async create(
     data: Partial<T>,
-    uniqueFilter?: FilterQuery<T>
+    uniqueFilter?: FilterQuery<T>,
   ): Promise<T | null> {
     if (uniqueFilter) {
       const exists = await this.model.findOne(uniqueFilter).exec();
@@ -75,7 +76,7 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
 
   public async update(
     filter: FilterQuery<T>,
-    data: Partial<T>
+    data: Partial<T>,
   ): Promise<T | null> {
     return this.model.findOneAndUpdate(filter, data, { new: true }).exec();
   }
@@ -87,7 +88,7 @@ export class BaseRepository<T extends Document> implements IBaseRepository<T> {
   }
 
   public async delete(
-    filter: FilterQuery<T>
+    filter: FilterQuery<T>,
   ): Promise<{ deletedCount?: number }> {
     const result = await this.model.deleteOne(filter).exec();
     return { deletedCount: result.deletedCount };

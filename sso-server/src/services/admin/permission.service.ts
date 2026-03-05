@@ -56,10 +56,10 @@ export class PermissionService extends BaseService<PermissionDocument> {
 
   public async deleteRolePermissions(dto: RolePermissionDto): Promise<any> {
     try {
-      // Xóa hàng loạt quyền của 1 role
+ 
       const deleted = await this.rolePermissionRepository.deleteMany({
         roleId: dto.roleId,
-        permissionId: { $in: dto.permissionIds }, // xóa tất cả permissionId nằm trong mảng này
+        permissionId: { $in: dto.permissionIds }, 
       });
 
       return deleted;

@@ -74,7 +74,7 @@ export class UserService extends BaseService<UserDocument> {
     search: string = "",
     pageCurrent: number = 1,
     pageSize: number = 10,
-    sortList: { key: string; value: "asc" | "desc" }[] = []
+    sortList: { key: string; value: "asc" | "desc" }[] = [],
   ): Promise<{ users: any[]; totalUsers: number; isEncrypted: boolean } | any> {
     try {
       const filter: any = {};
@@ -171,7 +171,7 @@ export class UserService extends BaseService<UserDocument> {
    * Xóa cứng user
    */
   public async hardDeleteUser(
-    userId: string
+    userId: string,
   ): Promise<{ deletedCount?: number } | null | any> {
     try {
       return this.repository.delete({ userId });
@@ -208,6 +208,7 @@ export class UserService extends BaseService<UserDocument> {
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
       if (!isPasswordValid) {
         return Unauthorized("Mật khẩu không đúng");
       }

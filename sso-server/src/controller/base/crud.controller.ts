@@ -9,7 +9,12 @@ import {
   ParseIntPipe,
   Patch,
 } from "@nestjs/common";
-import { ApiOperation, ApiExtraModels, ApiBody } from "@nestjs/swagger";
+import {
+  ApiOperation,
+  ApiExtraModels,
+  ApiBody,
+  ApiQuery,
+} from "@nestjs/swagger";
 import { BaseController } from "./base.controller";
 import {
   Success,
@@ -19,7 +24,7 @@ import {
 export function BaseCrud<TService>(
   primaryKey: string,
   createDto: any,
-  updateDto: any
+  updateDto: any,
 ) {
   class CrudBaseController extends BaseController {
     constructor(public readonly service: TService) {
@@ -36,15 +41,59 @@ export function BaseCrud<TService>(
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/create`,
-          error
+          error,
         );
       }
     }
 
     @Get("get-list")
     @ApiOperation({ summary: "Get list of records" })
+    @ApiQuery({
+      name: "isEncrypted",
+      required: false,
+      type: Boolean,
+      description: "Return encrypted data",
+      example: false,
+    })
+    @ApiQuery({
+      name: "search",
+      required: false,
+      type: String,
+      description: "Search keyword",
+      example: "",
+    })
+    @ApiQuery({
+      name: "pageCurrent",
+      required: false,
+      type: Number,
+      description: "Current page number",
+      example: 1,
+    })
+    @ApiQuery({
+      name: "pageSize",
+      required: false,
+      type: Number,
+      description: "Number of records per page",
+      example: 10,
+    })
+    @ApiQuery({
+      name: "sortList",
+      required: false,
+      type: String,
+      description: "Sort fields",
+      example: JSON.stringify([
+        { key: "firstName", value: "asc" },
+        { key: "lastName", value: "desc" },
+      ]),
+    })
     async getList(@Query() query?: any) {
       try {
+        query.pageCurrent = Number(query?.pageCurrent || 1);
+        query.pageSize = Number(query?.pageSize || 10);
+        query.skip = (query.pageCurrent - 1) * query.pageSize;
+        query.limit = query.pageSize;
+        query.sortList = query.sortList ? JSON.parse(query.sortList) : [];
+        query.search = query.search ? query.search : undefined;
         const result = await (this.service as any).getList(query);
         const total = Array.isArray(result) ? result.length : result?.total;
         const isEncrypted =
@@ -61,13 +110,19 @@ export function BaseCrud<TService>(
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/get-list`,
-          error
+          error,
         );
       }
     }
 
     @Get(`find-one/:${primaryKey}`)
     @ApiOperation({ summary: `Get one record by ${primaryKey}` })
+    @ApiQuery({
+      name: "isEncrypted",
+      required: false,
+      type: Boolean,
+      description: "Return encrypted data",
+    })
     async findOne(@Param(primaryKey) value: string, @Query() query?: any) {
       try {
         const result = await (this.service as any).findOne(primaryKey, value);
@@ -84,7 +139,7 @@ export function BaseCrud<TService>(
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/find-one`,
-          error
+          error,
         );
       }
     }
@@ -97,14 +152,14 @@ export function BaseCrud<TService>(
         const result = await (this.service as any).update(
           primaryKey,
           value,
-          body
+          body,
         );
 
         return result;
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/update`,
-          error
+          error,
         );
       }
     }
@@ -120,7 +175,7 @@ export function BaseCrud<TService>(
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/soft-delete`,
-          error
+          error,
         );
       }
     }
@@ -136,7 +191,7 @@ export function BaseCrud<TService>(
       } catch (error) {
         return this.ExceptionError(
           `/api/v1/admin/${this.service}/delete`,
-          error
+          error,
         );
       }
     }

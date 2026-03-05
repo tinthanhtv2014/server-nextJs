@@ -14,11 +14,11 @@ export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly userService: UserService) {}
 
   async use(req: FastifyRequest, _res: any, next: () => void) {
-    next();
-    return;
+    // next();
+    // return;
     try {
-      // const authHeader = req.headers.authorization as string;
-      const authHeader =  " "
+      const authHeader = req.headers.authorization as string;
+
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         throw new ForbiddenException("Bạn không có quyền truy cập");
       }
@@ -28,7 +28,6 @@ export class LoggerMiddleware implements NestMiddleware {
       if (!token) {
         throw new ForbiddenException("Token không hợp lệ");
       }
-
       let decoded: any;
       try {
         decoded = jwt.verify(token, process.env.SECRET_KEY!);

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Document, FilterQuery } from "mongoose";
 import { IBaseRepository } from "../../repository/base.respository";
+import { buildMongoQuery } from "../../shared/utils/mgo.util";
 
 export interface IBaseService<T extends Document> {
   getList(query?: any): Promise<{ data: any; total: number }>;
@@ -16,16 +17,41 @@ export class BaseService<T extends Document> implements IBaseService<T> {
   constructor(protected readonly repository: IBaseRepository<T>) {}
 
   async getList(query?: {
-    filter?: FilterQuery<T>;
-    sort?: any;
-    skip?: number;
-    limit?: number;
+    search?: any;
+    sortList?: any;
+    baseFilter?: any;
+    pageCurrent?: any;
+    pageSize?: any;
+    searchKeys?: any;
   }): Promise<{ data: any; total: number }> {
-    const data = this.repository.getMany(query?.filter, null, {
-      sort: query?.sort,
-      skip: query?.skip,
-      limit: query?.limit,
+    const {
+      search,
+      sortList,
+      baseFilter,
+      pageCurrent = 1,
+      pageSize = 10,
+    } = query || {};
+
+    const page = Number(pageCurrent);
+    const size = Number(pageSize);
+
+    const { filter, sort } = buildMongoQuery({
+      search,
+      searchKeys: ["fullName", "slug"],
+      sortList,
+      defaultSort: { price: -1 },
+      baseFilter,
     });
+    console.log("filter", filter);
+    const skip = (page - 1) * size;
+    const limit = size;
+
+    const data = await this.repository.getMany(filter, null, {
+      sort,
+      skip,
+      limit,
+    });
+
     return data;
   }
 

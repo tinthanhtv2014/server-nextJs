@@ -5,7 +5,7 @@ import {
   RequestMethod,
 } from "@nestjs/common";
 import { UserModule } from "./user/user.module";
-import { SystemModule } from "./system/system.module";
+
 import { RouterModule } from "@nestjs/core";
 import { LoggerMiddleware } from "../../middleware/auth.middleware";
 import { RoleModule } from "./role/role.module";
@@ -15,7 +15,7 @@ import { BlogCategoryModule } from "./blog-category.module.ts/blog-category.modu
 
 export const AdminRegistryModule = [
   UserModule,
-  SystemModule,
+
   RoleModule,
   BlogModule,
   PermissionModule,
@@ -29,7 +29,7 @@ export const AdminRegistryModule = [
       AdminRegistryModule.map((module) => ({
         path: "api/v1/admin", // prefix chung cho tất cả module con
         module,
-      }))
+      })),
     ),
   ],
 })
@@ -39,11 +39,11 @@ export class AdminModule implements NestModule {
     consumer
       .apply(LoggerMiddleware)
       .exclude(
-        { path: "api/v1/admin/UsersPrivate/login", method: RequestMethod.POST },
+        { path: "api/v1/admin/users/login", method: RequestMethod.POST },
         {
-          path: "api/v1/admin/UsersPrivate/register",
+          path: "api/v1/admin/users/register",
           method: RequestMethod.POST,
-        }
+        },
       )
       .forRoutes({ path: "api/v1/admin/(.*)", method: RequestMethod.ALL });
   }

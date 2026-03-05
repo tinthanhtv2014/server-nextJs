@@ -5,7 +5,7 @@ import { encryptAES } from "./encrypted.util";
 export function Success(
   result: any,
   message: string = "Process success",
-  total?: number
+  total?: number,
 ): ApiResponse {
   return {
     status: 200,
@@ -13,7 +13,9 @@ export function Success(
     error: null,
     isBusinessError: false,
     errorDetail: null,
-    resultApi: result,
+    resultApi: {
+      data: result,
+    },
     isEncrypted: false,
     total,
   };
@@ -22,7 +24,7 @@ export function Success(
 export function SuccessEncrypted(
   result: any,
   total: number = 1,
-  message = "Process success"
+  message = "Process success",
 ): ApiResponse {
   return {
     status: 200,
@@ -43,7 +45,7 @@ export function ProcessError(
   status: number = 400,
   error?: string,
   errorDetail: string = "",
-  resultApi?: any
+  resultApi?: any,
 ): ApiResponse {
   return {
     status,
@@ -60,7 +62,7 @@ export function NotfoundError(
   message = "Notfound",
   status: number = 404,
   error?: string,
-  errorDetail: string = ""
+  errorDetail: string = "",
 ): ApiResponse {
   return {
     status,
@@ -77,7 +79,7 @@ export function Unauthorized(
   message = "Unauthorized",
   status: number = 401,
   error?: string,
-  errorDetail: string = ""
+  errorDetail: string = "",
 ): ApiResponse {
   return {
     status,
@@ -94,7 +96,7 @@ export function ConflictError(
   message = "Conflict",
   status: number = 409,
   error?: string,
-  errorDetail: string = ""
+  errorDetail: string = "",
 ): ApiResponse {
   return {
     status,

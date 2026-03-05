@@ -34,14 +34,14 @@ export class ApiResponseInterceptor implements NestInterceptor {
                 return SuccessEncrypted(
                   data.resultApi ?? data,
                   data.total ?? 1,
-                  data.message ?? "Success"
+                  data.message ?? "Success",
                 );
               }
 
               return Success(
                 data.resultApi ?? data,
                 data.message ?? "Success",
-                data.total
+                data.total,
               );
 
             case 400:
@@ -50,7 +50,7 @@ export class ApiResponseInterceptor implements NestInterceptor {
                 400,
                 data.error,
                 data.errorDetail,
-                data.resultApi
+                data.resultApi,
               );
 
             case 401:
@@ -71,7 +71,7 @@ export class ApiResponseInterceptor implements NestInterceptor {
         }
 
         return Success(data);
-      })
+      }),
     );
   }
 }
